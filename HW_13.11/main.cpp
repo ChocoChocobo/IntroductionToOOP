@@ -35,6 +35,14 @@ public:
 	}
 };
 
+double distance(Point A, Point B)
+{
+	double x_distance = A.get_x() - B.get_x();
+	double y_distance = A.get_y() - B.get_y();
+	double distance = sqrt(x_distance * x_distance + y_distance * y_distance);
+	return distance;
+}
+
 void main()
 {
 	Point A;
@@ -46,6 +54,8 @@ void main()
 	B.set_x(4);
 	B.set_y(7);
 	cout << "Point B: "; B.Print();
-	cout << "Distance: " << A.distance(B) << " | " << B.distance(A);
+	cout << "Distance: " << A.distance(B) << " | " << B.distance(A) << endl;
+	cout << "Distance A to B: " << distance(A, B) << endl;
+	cout << "Distance B to A: " << distance(B, A) << endl;
 
 }
