@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+#define delimiter "----------------------------------------"
 
 class Point
 {
@@ -43,25 +44,26 @@ public:
 	{
 		this->x = x;
 		this->y = y;
-		//cout << "2argConstructor: " << this << endl;
+		cout << "2argConstructor: " << this << endl;
 	}
 	Point(const Point& other)
 	{
 		this->x = other.x;
 		this->y = other.y;
-		//cout << "CopyConstructor: " << this << endl;
+		cout << "CopyConstructor: " << this << endl;
 	}
 	~Point()
 	{
-		//cout << "Destructor:\t" << this << endl;
+		cout << "Destructor:\t" << this << endl;
 	}
 
 	void Print()
 	{
 		cout << "X = " << x << ", Y = " << y << std::endl;
 	}
-	double distance(Point other)
+	double distance(const Point& other)const
 	{
+		//this->x *= 10; -Так уже не сделаем
 		double x_distance = this->x - other.x;
 		double y_distance = this->y - other.y;
 		double distance = sqrt(x_distance * x_distance + y_distance * y_distance); //Vector length
@@ -69,7 +71,7 @@ public:
 	}
 };
 
-double distance(Point A, Point B)
+double distance(const Point& A, const Point& B)
 {
 	double x_distance = A.get_x() - B.get_x();
 	double y_distance = A.get_y() - B.get_y();
@@ -108,8 +110,11 @@ void main()
 	B.set_x(4);
 	B.set_y(7);
 	cout << "Point B: "; B.Print();
+	cout << delimiter << endl;
 	cout << "Distance: " << A.distance(B) << " | " << B.distance(A) << endl; //Method
+	cout << delimiter << endl;
 	cout << "Distance A to B: " << distance(A, B) << endl;		//Function
+	cout << delimiter << endl;
 	cout << "Distance B to A: " << distance(B, A) << endl;	//Function
 #endif // DISTANCE_CHECK
 
