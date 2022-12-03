@@ -41,7 +41,9 @@ public:
 		this->size = strlen(str) + 1; //Ne men9t'!!!
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
+		{
 			this->str[i] = str[i];
+		}
 		cout.width(WIDTH);
 		cout << left << "Constructor:" << this << endl;
 	}
