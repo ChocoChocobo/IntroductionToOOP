@@ -247,6 +247,17 @@ public:
 	
 };
 
+ostream& operator<<(ostream& os, const Fraction& obj)
+{
+	if (obj.get_integer())os << obj.get_integer() << " ";
+	if (obj.get_numerator())
+	{
+		os << obj.get_numerator() << "/" << obj.get_denominator();
+	}
+	else os << 0;
+	return os;
+}
+
 //#define CONSTRUCTOS_CHECK
 
 void main()
@@ -270,11 +281,10 @@ void main()
 	Four.to_proper();
 	Four.Print();
 #endif // CONSTRUCTORS_CHECK
-
-	Fraction C(840, 3600);
+	//						Fraction reduction
+	/*Fraction C(840, 3600);
 	cout << "Original fraction: "; C.Print();
-	cout << "Reduced fraction: "; C.Reduce(); C.Print();
-
+	cout << "Reduced fraction: "; C.Reduce(); C.Print();*/
 	//						Increment/Decrement (++/--)
 	/*C.operator++();
 	C.Print();
@@ -327,7 +337,7 @@ void main()
 	R.operator/=(S);
 	R.Print();*/
 	//						==, !=, >, <, >=, <=
-	Fraction T(7, 3);
+	/*Fraction T(7, 3);
 	Fraction U(4, 5);
 	if (T.operator==(U)) cout << "Correct!" << endl;
 	else cout << "Incorrect!" << endl;
@@ -345,5 +355,8 @@ void main()
 	else cout << "Incorrect!" << endl;
 
 	if (T.operator<=(U)) cout << "Correct!" << endl;
-	else cout << "Incorrect!" << endl;
+	else cout << "Incorrect!" << endl;*/
+
+	Fraction A(2, 3, 4);
+	cout << A << endl;
 }
