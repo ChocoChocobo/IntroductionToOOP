@@ -8,7 +8,7 @@ String operator+(const String& left, const String& right);
 
 class String
 {
-	int size;
+	size_t size;
 	char* str;
 public:
 	int get_size()const
@@ -29,16 +29,17 @@ public:
 	}
 
 	//			Constructors
-	String(int size = 50) //50 characters default string
+	explicit String(size_t size = 50) //50 characters default string
 	{
 		this->size = size;
 		this->str = new char[size] {};
 		cout.width(WIDTH);
 		cout << left << "Default Constructor:" << this << endl;
 	}
-	String(const char str[])
+	String(const char* str)
 	{
-		this->size = strlen(str) + 1; //Ne men9t'!!!
+		this->size = strlen(str) + 1; //strlen() возвращает размер строки в символах
+									  //+1 резервирует место для NULL терминатора
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
 		{
@@ -47,7 +48,7 @@ public:
 		cout.width(WIDTH);
 		cout << left << "Constructor:" << this << endl;
 	}
-	String(String& other)
+	String(const String& other)
 	{
 		this->size = other.size;
 		this->str = new char[size] {};
@@ -60,6 +61,7 @@ public:
 	}
 	~String()
 	{
+		delete[] this->str;
 		cout.width(WIDTH);
 		cout << std::left << "Destructor:" << this << endl;
 	}
@@ -115,7 +117,8 @@ ostream& operator << (ostream& os, const String& obj)
 
 void main()
 {
-	String def_str;
+	//String str1 = 12;  //explicit constructor нельзя вызвать так
+	String def_str(12);  //explicit constructor можно вызвать только так
 	def_str.Print();
 
 	String str1 = "Hello";
