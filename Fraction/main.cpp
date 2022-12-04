@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 using namespace std;
 using std::cin;
@@ -5,6 +6,7 @@ using std::cout;
 using std::endl;
 
 #define WIDTH	27
+#define delimiter "\n____________________________________\n"
 
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
@@ -84,6 +86,13 @@ public:
 	}
 
 	//				Operators:
+	Fraction& operator()(int integer, int numerator, int denominator)
+	{
+		set_integer(integer);
+		set_numerator(numerator);
+		set_denominator(denominator);
+		return *this;
+	}
 	Fraction& operator=(const Fraction& other)
 	{
 		this->integer = other.integer;
@@ -137,6 +146,15 @@ public:
 		Fraction old = *this;
 		integer--;
 		return old;
+	}
+	//				Type-cast operators:
+	explicit operator int()const
+	{
+		return integer;
+	}
+	explicit operator double()const
+	{
+		return integer + (double)numerator / denominator;
 	}
 
 	//				Methods:
@@ -288,17 +306,62 @@ std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 	{
 		os << obj.get_numerator() << "/" << obj.get_denominator();
 	}
-	else os << 0;
+	else if(obj.get_integer() == 0) os << 0;
 	return os;
 }
 istream& operator>>(istream& is, Fraction& obj)
 {
 	
+	//int integer, numerator, denominator;
+	//is >> integer >> numerator >> denominator;
+	/*obj.set_integer(integer);
+	obj.set_numerator(numerator);
+	obj.set_denominator(denominator);*/
+	//obj(integer, numerator, denominator);
+
+	int number[3] = {}; //This array keeps numbers from the string
+
+	const int SIZE = 256;
+	char buffer[SIZE] = {};
+	char delimiters[] = " /()";
+	//is >> buffer;		//cin keeps data until it hits 'space'
+						//In order to keep the line with 'space' we use cin.getline() 
+	is.getline(buffer, SIZE);
+	int n = 0;
+	//Функция strtok() делит строку на подстроки, используя разделители, где каждый разделитель заменяется нулём
+	for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
+	{
+		number[n++] = atoi(pch); //Функция atoi() конвертирует тип string в int. Принимает строку, если строка 
+								//является числом, то возвращает int-овый эквивалент этого числа
+	}
+	/*for (int i = 0; i < n; i++)
+	{
+		cout << number[i] << "\t";
+	}
+	cout << endl;*/
+
+	obj = Fraction();
+	switch (n)
+	{
+	case 1: 
+		obj.set_integer(number[0]); break;
+	case 2: 
+		obj.set_numerator(number[0]); 
+		obj.set_denominator(number[1]); break;
+	case 3:
+		obj.set_integer(number[0]);
+		obj.set_numerator(number[1]);
+		obj.set_denominator(number[2]); break;
+	}
+	return is;
 }
 
 //#define CONSTRUCTORS_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define INCREMENT_CHECK
+//#define ISTREAM_OPERATOR_CHECK
+//#define TYPE_CONVERSION_BASICS
+//#define CONVERSION_FROM_OTHER_TO_CLASS
 
 void main()
 {
@@ -343,8 +406,48 @@ void main()
 		i.print();
 	}
 #endif // INCREMENT_CHECK
-	Fraction A(2, 3, 5);
-	Fraction B(3, 4, 5);
+
+#ifdef ISTREAM_OPERATOR_CHECK
+	/*Fraction A(2, 3, 5);
+Fraction B(3, 4, 5);
+cout << A << endl;*/
+	Fraction A(50, 75, 80);
+	cout << "Enter a simple fraction: ";
+	cin >> A;
+	cout << delimiter << endl;
+	cout << A;
+	cout << delimiter << endl;
+#endif // ISTREAM_OPERATOR_CHECK
+
+#ifdef TYPE_CONVERSION_BASICS
+	cout << (double)7 / 2 << endl;
+
+	int a = 2;		//No conversions
+	double b = 3;	//Conversion from less to more
+	int c = b;		//From more to less without data loss
+	int d = 4.6;	//From more to less with data loss
+	cout << d << endl;
+#endif // TYPE_CONVERSION_BASICS
+
+#ifdef CONVERSION_FROM_OTHER_TO_CLASS
+	int a = 2;		//No conversions
+	Fraction A = 5;	//Conversion from 'int' to 'Fraction'
+					//Single-Argument Constructor
 	cout << A << endl;
-	
+	cout << delimiter << endl;
+
+	Fraction B;
+	B = 8;			//Conversion from 'int' to 'Fraction'
+					//Assignment operator
+	cout << B << endl;
+#endif // CONVERSION_FROM_OTHER_TO_CLASS
+
+	Fraction A(2, 3, 4);
+	cout << A << endl;
+
+	int a = (int)A;			//explicit
+	cout << a << endl;
+
+	double b = (double)A;	//explicit
+	cout << b << endl;
 }
