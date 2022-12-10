@@ -55,13 +55,24 @@ public:
 		cout.width(WIDTH);
 		cout << std::left << "DefaultConstructor:" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
 		cout.width(WIDTH);
 		cout << std::left << "SingleArgumentConstructor:" << this << endl;
+	}
+	Fraction(double decimal)
+	{
+		int fake_integer;
+		fake_integer = decimal;
+		decimal -= fake_integer;
+		this->integer = fake_integer;
+		this->numerator = decimal * 100;
+		this->denominator = 100;
+		Reduce();
+
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -362,6 +373,7 @@ istream& operator>>(istream& is, Fraction& obj)
 //#define ISTREAM_OPERATOR_CHECK
 //#define TYPE_CONVERSION_BASICS
 //#define CONVERSION_FROM_OTHER_TO_CLASS
+//#define CONVERSION_FROM_CLASS_TO_OTHER
 
 void main()
 {
@@ -442,6 +454,7 @@ cout << A << endl;*/
 	cout << B << endl;
 #endif // CONVERSION_FROM_OTHER_TO_CLASS
 
+#ifdef CONVERSION_FROM_CLASS_TO_OTHER
 	Fraction A(2, 3, 4);
 	cout << A << endl;
 
@@ -450,4 +463,9 @@ cout << A << endl;*/
 
 	double b = (double)A;	//explicit
 	cout << b << endl;
+#endif // CONVERSION_FROM_CLASS_TO_OTHER
+
+	Fraction A = 2.75;
+	cout << A << endl;
+
 }
